@@ -8,28 +8,27 @@ window.RTCSessionDescription = window.RTCSessionDescription || window.mozRTCSess
 var personalVideoStream = null;
 var rtcPeerConnection= null;
 var t = true;
-
+/** Chaeck for browser compatability */
   if(navigator.getUserMedia) { 
     rtcPeerConnection= new RTCPeerConnection(iceServerConfigs);
     rtcPeerConnection.onicecandidate = onIceCandidateHandler;
     rtcPeerConnection.onaddstream = onAddStreamHandler;
-   } else {alert("Your browser does not allow Real Time Connections!")
-  }
-
-
+   } else {alert("Your browser does not allow Real Time Connections!")}
+/** Create first call and allow callback from signaling.js */
 this.Call = function(send) {
   if (t){getUserMedia(send);} t = false;
 };
+/** Callback from signaling.js  */
 this.sdp = function(signal){    
   console.log("Received SDP from remote peer.");
   rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp));
 }
+/** Callback from signaling.js  */
 this.candidate = function(signal){
 console.log("Received ICECandidate from remote peer.");
 rtcPeerConnection.addIceCandidate(new RTCIceCandidate(signal.candidate));
 }
-
-
+/** Get user media method - Use for offer and answer  */
 function getUserMedia(local){
   navigator.getUserMedia(paramaters, function (stream) {
     personalVideoStream = stream;
@@ -38,47 +37,23 @@ function getUserMedia(local){
     if(local){Offer();}else{Answer();}
   }, function(error) { console.log(error);}); 
 }
-
+/** creat and send offer to peer */
 function Offer() {
-  rtcPeerConnection.createOffer(
-    function (offer) {
-      var off = new RTCSessionDescription(offer);
-      rtcPeerConnection.setLocalDescription(new RTCSessionDescription(off), 
-        function() {
-          websocket.offerAnswer(off);
-
-        }, 
-        function(error) { console.log(error);}
-      );
-    }, 
-    function (error) { console.log(error);}
-  );
+  rtcPeerConnection.createOffer( function (offer) { var off = new RTCSessionDescription(offer);
+      rtcPeerConnection.setLocalDescription(new RTCSessionDescription(off), function() { websocket.offerAnswer(off);}, function(error) { console.log(error);});}, function (error) { console.log(error);});
 };
-
+/** Answer peers offer with answer */
 function Answer() {
-  rtcPeerConnection.createAnswer(
-    function (answer) {
-      var ans = new RTCSessionDescription(answer);
-      rtcPeerConnection.setLocalDescription(ans, function() {
-          websocket.offerAnswer(ans);
-
-        }, 
-        function (error) { console.log(error);}
-      );
-    },
-    function (error) {console.log(error);}
-  );
+  rtcPeerConnection.createAnswer(function (answer) { var ans = new RTCSessionDescription(answer); 
+    rtcPeerConnection.setLocalDescription(ans, function() {  websocket.offerAnswer(ans); }, function (error) { console.log(error);}); },function (error) {console.log(error);} );
 };
-
+/** if evt.candidate is not undefined -> send event to peer */
 function onIceCandidateHandler(evt) {
   if (!evt || !evt.candidate) return;
   websocket.onIceCandidate(evt);
 };
-
+/** Add guests video to the guestVideo html video element */
 function onAddStreamHandler(evt) {
   guestVideo.srcObject = evt.stream;
 };
-
-
-
 }
