@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="rtcConnection.js"></script>
+    <script src="signaling.js"></script>
+    <title>One on one video audio screen conference</title>
+  </head>
+  
+  <body>      
+    <video id="guestVideo" autoplay></video>
+    <video id="personalVideo" autoplay muted></video>
+    <input id="videoCallButton" type="button" value="Start video call" onclick="rtc.Call(true)"/>
+    <script> 
+      var personalVideo = document.getElementById('personalVideo');
+      var guestVideo = document.getElementById('guestVideo');
+
+      var webSocketHostName = { wssHost: 'wss://example.com:5000' };
+      var stunTurnServers = {'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]};
+      var roomName = "uniqueRoomName";
+      var paramaters = { "audio": true, "video": true };
+      var websocket = new signaling(webSocketHostName,roomName);  
+      var rtc = new rt(stunTurnServers,paramaters,websocket);  
+      
+
+    </script>
+  </body>
+</html>
+
