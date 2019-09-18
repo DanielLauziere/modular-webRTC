@@ -4,24 +4,26 @@
     <script src="rtcConnection.js"></script>
     <script src="signaling.js"></script>
     <title>One on one video audio screen conference</title>
+    <style>
+      body,html{margin:0px;border:0px;}  
+      video{position:absolute; top:0px;}
+      #personalVideo{right:0px;width:19%;z-index:2;opacity: .6;}
+      #guestVideo{left:0px;width:100%;height:100vh; z-index:1;object-fit: cover;}
+    </style>
   </head>
   
   <body>      
     <video id="guestVideo" autoplay></video>
     <video id="personalVideo" autoplay muted></video>
-    <input id="videoCallButton" type="button" value="Start video call" onclick="rtc.Call(true)"/>
     <script> 
       var personalVideo = document.getElementById('personalVideo');
       var guestVideo = document.getElementById('guestVideo');
-
-      var webSocketHostName = { wssHost: 'wss://example.com:5000' };
-      var stunTurnServers = {'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]};
+      var webSocketHostName = { wssHost: 'wss://gokmr.com:5002' };
+      var stunTurnServers = {'iceServers': [{'url': 'stun:stun.l.google.com:19302'}, {'url': 'turn:207.246.82.105:3478?transport=udp','credential': '1914','username': 'daniel'},{'url': 'turn:207.246.82.105:3478?transport=tcp','credential': '1914','username': 'daniel'}]};
       var roomName = "uniqueRoomName";
       var paramaters = { "audio": true, "video": true };
       var websocket = new signaling(webSocketHostName,roomName);  
       var rtc = new rt(stunTurnServers,paramaters,websocket);  
-      
-
     </script>
   </body>
 </html>

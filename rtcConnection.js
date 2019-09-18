@@ -1,3 +1,13 @@
+// Last update: 9/18/2019
+//
+// _________________________
+// ModularRTC v1.1
+//
+//  https://github.com/DanielLauziere/modular-webRTC
+//
+// --------------------------------------------------
+// Daniel Lauziere
+// --------------------------------------------------
 function rt(iceServerConfigs,paramaters){
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
