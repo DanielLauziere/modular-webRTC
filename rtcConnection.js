@@ -13,6 +13,11 @@ var t = true;
     rtcPeerConnection= new RTCPeerConnection(iceServerConfigs);
     rtcPeerConnection.onicecandidate = onIceCandidateHandler;
     rtcPeerConnection.onaddstream = onAddStreamHandler;
+    rtcPeerConnection.oniceconnectionstatechange = function() {
+      if(rtcPeerConnection.iceConnectionState == 'disconnected' ) {
+        document.location.reload(false)
+      }
+  }
    } else {alert("Your browser does not allow Real Time Connections!")}
 /** Create first call and allow callback from signaling.js */
 this.Call = function(send) {
