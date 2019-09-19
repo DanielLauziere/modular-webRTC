@@ -8,6 +8,13 @@
 // --------------------------------------------------
 // Daniel Lauziere
 // --------------------------------------------------
+//
+// WebRTC broken down into managable modules that can
+// be used independently of each other based on the 
+// needs of the client. Differents siganling methiods,
+// stream requirements, connection settings and 
+// hybrid shell methods for languages like C#, Java...
+//
 function rt(iceServerConfigs,paramaters){
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;

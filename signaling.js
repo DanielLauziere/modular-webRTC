@@ -3,11 +3,15 @@
 // _________________________
 // ModularRTC v1.1
 //
-//  https://github.com/DanielLauziere/modular-webRTC
+// https://github.com/DanielLauziere/modular-webRTC
 //
 // --------------------------------------------------
 // Daniel Lauziere
 // --------------------------------------------------
+//
+// Signaling server methods for sending signaling server
+// data to server and peers
+//
 function signaling(websockethost,group){
     var wsc = new WebSocket(websockethost.wssHost);    
     wsc.onopen = function() { wsc.send(JSON.stringify({join:group}));/* Join a room using a unique name */ wsc.send(JSON.stringify({room:group,"connectedSignal": "connectedSignal" })); }
